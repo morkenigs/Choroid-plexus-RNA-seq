@@ -3,7 +3,6 @@ library("BiocParallel")
 library(DESeq2)
 library(FactoMineR)
 library(apeglm)
-library(EnhancedVolcano)
 library(pheatmap)
 library(ggplot2)
 library(Hmisc)
@@ -348,67 +347,4 @@ ggplot(data=GO_up_24[1:15,], aes(x=counts, y=reorder(Description,counts),size=ra
   scale_color_gradient(low="#F4B570", high = "#F06B37")+guides(color=guide_colorbar(order=1),size=guide_legend(order=2))
 ggsave("GO_up_24.pdf", height=60, units = "mm", width=90)
 
-##############################proteomics
-#proteomics plotting
-prot_data=read.delim(file="proteomics/proteomics_data.txt", header=T,stringsAsFactors = F)
-#remove duplicates
-duplicate_list=prot_data$Gene.names[duplicated(prot_data$Gene.names)]
-prot_data=prot_data[!prot_data$Gene.names %in% unique(duplicate_list),]
-rownames(prot_data)=prot_data$Gene.names
-prot_data$prot.name=toupper(prot_data$Gene.names)
-prot_data["Spp1","prot.name"]="OSTP"
 
-keyvals= ifelse(prot_data$Pval<0.05, 'red','grey')
-keyvals[is.na(keyvals)] <- 'grey'
-names(keyvals)[keyvals == 'red'] <- 'Significant (P<0.05)'
-names(keyvals)[keyvals == 'grey'] <- 'NS'
-prot_labels=prot_data$prot.name[prot_data$Pval<0.0018]
-prot_labels=prot_labels[c(1:4,7:10)]
-
-# proteomics volcano plot
-pdf("volcano_proteomics.pdf", width=4, height=4)
-EnhancedVolcano(prot_data,
-                lab = prot_data$prot.name,
-                x = 'L2FC',
-                y = 'Pval', 
-                xlab=bquote(~log[2]~ "f.c."),
-                ylab=bquote(~-log[10]~italic(P)),
-                axisLabSize=10,
-                legendLabSize=10,
-                pCutoff = 0.05,
-                FCcutoff = 0,
-                cutoffLineWidth=0.46,
-                cutoffLineType = 'dashed',
-                cutoffLineCol = "grey",
-                #legend=c("NS", "Log2 FC", "P"),
-                #legendLabels = c('NS', expression(Log[2]~FC), "p-value"),
-                gridlines.major = FALSE,
-                gridlines.minor = FALSE,
-                labSize = 2.5,
-                borderWidth=0.46,
-                legendPosition = "bottom",
-                title=NULL,
-                subtitle=NULL,
-                titleLabSize = 20,
-                caption=NULL,
-                border='partial',
-                selectLab =prot_labels,
-                ylim= c(0,12 +0.5),
-                colCustom = keyvals,
-                labvjust=1.5,
-                pointSize = 1.5,
-
-)
-dev.off()
-
-standard_error <- function(x) sd(x) / sqrt(length(x)) 
-prot_data$lfcSE=apply(prot_data[,4:7],1,standard_error)
-
-# proteomics downregulated proteins overlapping with seq barplot
-ggplot(data=prot_data[genes_down_proteomics_overlap,], aes(x=reorder(prot.name,-L2FC), y=L2FC))+geom_bar(stat="identity", fill="#108AA4",color="black",size=0.46,width=0.6)+
-geom_errorbar(aes(ymin=L2FC-lfcSE, ymax=L2FC+lfcSE), width=.2,position=position_dodge(.9),color="black",size=0.46)+ ylab(expression("log"[2]*" f.c."))+
-  theme(axis.text.x=element_text(size=10,  family="sans",color="black",angle = 45,vjust=1,hjust=1),axis.text.y=element_text(size=10,  family="sans",color="black"), axis.title =element_text(size=10,  family="sans", color="black"),axis.line = element_line(colour = 'black', size = 0.46),
-        axis.ticks.length=unit(.15, "cm"),axis.ticks =element_line(color="black",size=0.46),axis.title.x = element_blank())+
-  scale_y_continuous(expand = c(0.05,-0.05)) +
-  geom_hline(yintercept=0, linetype="solid", color="black", size=0.46)
-ggsave(filename = "barplot_proteomics_downregulate.pdf", height=55, unit="mm",width=80)
