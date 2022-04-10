@@ -12,7 +12,6 @@ Before running any of the R scripts please install the following R libraries :
 - **Hmisc** (https://cran.r-project.org/web/packages/Hmisc/index.html)
 - **stringr** (https://www.rdocumentation.org/packages/stringr/versions/1.4.0)
 - **ggpubr** (https://rpkgs.datanovia.com/ggpubr/)
-- **EnhancedVolcano** (https://bioconductor.org/packages/release/bioc/html/EnhancedVolcano.html)
 - **RColorBrewer** (https://cran.r-project.org/web/packages/RColorBrewer/index.html)
 ## List of scripts
 - **CPE_cultures_24OH_analysis.R** - R script used to analyze the RNAseq data generated from choroid plexus epithelium cultures treated with 24-OH or DMSO as control.
