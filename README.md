@@ -15,4 +15,3 @@ Before running any of the R scripts please install the following R libraries :
 - **RColorBrewer** (https://cran.r-project.org/web/packages/RColorBrewer/index.html)
 ## List of scripts
 - **CPE_cultures_24OH_analysis.R** - R script used to analyze the RNAseq data generated from choroid plexus epithelium cultures treated with 24-OH or DMSO as control.
-- **CYP46A1_overexpression_analysis.R** - R script used to analyze the RNAseq data generated from choroid plexus 6 weeks post injection with AAV overexpressing CYP46A1 or GFP as control.
