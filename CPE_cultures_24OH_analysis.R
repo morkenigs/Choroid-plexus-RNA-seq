@@ -299,16 +299,6 @@ ggplot(data=for_bar_all[genes_cholesterol,], aes(x=reorder(genes_cholesterol,-lo
   scale_y_continuous(expand = c(0,0.3)) +facet_grid(~subgroup, scales = "free_x",space="free_x",switch="x",labeller = labeller(subgroup = label_wrap_gen(10))) +geom_hline(yintercept=0, linetype="solid", color="black", size=0.46)
 ggsave(filename = "barplot_cholesterol.pdf", height=80, unit="mm",width=150)
 
-#barplot proteomics overlap
-ggplot(data=for_bar_all[genes_down_proteomics_overlap,], aes(x=reorder(genes_down_proteomics_overlap,-log2FoldChange), y=log2FoldChange))+geom_bar(stat="identity", fill="#F09837",color="black",size=0.46,width=0.6)+
-  geom_errorbar(aes(ymin=log2FoldChange-lfcSE, ymax=log2FoldChange+lfcSE), width=.2,position=position_dodge(.9),color="black",size=0.46)+ 
-  ylab(expression("log"[2]*" f.c."))+
-  theme(axis.text.x=element_text(size=10,  family="sans",face = "italic",color="black",angle = 45,vjust=1,hjust=1),axis.text.y=element_text(size=10,  family="sans",color="black"), axis.title =element_text(size=10,  family="sans", color="black"),axis.line = element_line(colour = 'black', size = 0.46),
-        axis.ticks.length=unit(.15, "cm"),axis.ticks =element_line(color="black",size=0.46),axis.title.x = element_blank())+
-  scale_y_continuous(expand = c(0.05,-0.05)) +
-  geom_hline(yintercept=0, linetype="solid", color="black", size=0.46)
-ggsave(filename = "barplot_proteomics_overlap.pdf", height=55, unit="mm",width=80)
-
 #Prepare data for plotting GO terms from metascape results sheet
 eval_vec=Vectorize(eval, vectorize.args="expr")
 GO_down_24=read.delim("metascape_result_down.txt",header = T,stringsAsFactors = F)
