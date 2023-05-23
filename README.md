@@ -1,6 +1,5 @@
 # Choroid plexus RNA-seq
-Codes used for the analysis of RNA-seq data performed in the paper "Cholesterol 24-hydroxylase at the choroid plexus
-restrains local inflammation and protects overall brain function".
+Codes used for the analysis of RNA-seq data performed in the paper "Cholesterol 24-hydroxylase shapes the role of the choroid plexus as a guardian of brain immune homeostasis".
 ## Recommendations
 Before running any of the R scripts please install the following R libraries :
 - **DESeq2** (https://bioconductor.org/packages/release/bioc/html/DESeq2.html)
